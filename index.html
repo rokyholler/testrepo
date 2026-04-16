@@ -2,51 +2,78 @@
 <html>
 <head>
   <style>
-   body { margin: 0; font-family: sans-serif; background-color: #f4f4f4; }
+  body { margin: 0; font-family: sans-serif; background-color: #f4f4f4; }
 
-.header {
-  height: 50px;
-  background-color: #470D4A;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
+  /* Desktop Header */
+  .header {
+    height: 50px;
+    background-color: #470D4A;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
 
-.main-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Remove justify-content: center to stop vertical centering */
-  padding-top: 100px; /* This controls the gap below the header */
-}
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    padding-left: 15px; /* Prevents form from touching screen edges */
+    padding-right: 15px;
+  }
 
-form {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 300px;
-}
+  /* Desktop Form */
+  form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px; /* Limits width on desktop */
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+  }
 
-input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+  input, button {
+    padding: 15px; /* Bigger tap targets for fingers */
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
 
-button {
-  padding: 10px;
-  background-color: #470D4A;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  button {
+    background-color: #470D4A;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-button:hover { opacity: 0.9; }
+  /* MOBILE STYLES (Applies to screens smaller than 600px) */
+  @media (max-width: 600px) {
+    .header {
+      height: 80px;      /* Taller header */
+      font-size: 24px;   /* Bigger text */
+    }
 
-  </style>
+    .main-content {
+      padding-top: 30px;
+    }
+
+    form {
+      max-width: 100%;   /* Takes full available width */
+      box-shadow: none;  /* Optional: cleaner look on mobile */
+      border: 1px solid #ddd;
+    }
+  }
+</style>
+
 </head>
 <body>
   <header class="header">
