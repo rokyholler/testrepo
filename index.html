@@ -1,27 +1,41 @@
-<!-- <!DOCTYPE html>
-<html>
-<body>
-  <h2>Register</h2>
-  <form action="https://script.google.com/macros/s/AKfycbxXVhKNsTrcAWP1mF10PWv6l6V7U9WezCV48PuW42wNVql4Hy4uEA9x_kx7asMTd_K-8Q/exec" method="POST">
-    <input type="text" name="data" placeholder="Enter Name" required>
-    <button type="submit">Submit</button>
-  </form>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html>
 <head>
   <style>
-    /* Simple styling for the message */
-    #message-container { text-align: center; margin-top: 50px; font-family: sans-serif; }
-    .hidden { display: none; }
+    body { margin: 0; font-family: sans-serif; }
+
+    /* Header styling */
+    .header {
+      height: 50px;
+      background-color: #470D4A;
+      color: white;
+      display: flex;
+      align-items: center;    /* Centers text vertically */
+      justify-content: center; /* Centers text horizontally */
+    }
+
+    /* Main content centering */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;    /* Centers form horizontally */
+      justify-content: center; /* Centers form vertically on the page */
+      height: calc(100vh - 50px); /* Uses remaining screen height */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 300px;
+    }
   </style>
 </head>
 <body>
-
-  <div id="content-wrapper">
+  <header class="header">
+    My Website Header
+  </header>
+  <div class="main-content" id="content-wrapper">
     <!-- This ID is used to target and replace the content -->
     <form id="dataForm">
       <input type="text" name="data" placeholder="Type something..." required>
@@ -47,7 +61,7 @@
       })
       .then(response => {
         // REPLACE the entire wrapper content with your success message
-        wrapper.innerHTML = "<h2>✅ Success! Your data was sent.</h2>";
+        wrapper.innerHTML = "<h2>✅ Registered!</h2>";
       })
       .catch(error => {
         console.error('Error!', error.message);
