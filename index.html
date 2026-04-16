@@ -1,4 +1,10 @@
-<form onsubmit="alert('Sent: ' + document.getElementById('input').value); return false;">
-  <input type="text" id="input" placeholder="Enter text">
-  <button type="submit">Submit</button>
-</form>
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Submit to Google Sheets</h2>
+  <form action="https://script.google.com/macros/s/AKfycbxXVhKNsTrcAWP1mF10PWv6l6V7U9WezCV48PuW42wNVql4Hy4uEA9x_kx7asMTd_K-8Q/exec" method="POST">
+    <input type="text" name="data" placeholder="Type something..." required>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
