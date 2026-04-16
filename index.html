@@ -1,10 +1,62 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <body>
-  <h2>Submit to Google Sheets</h2>
+  <h2>Register</h2>
   <form action="https://script.google.com/macros/s/AKfycbxXVhKNsTrcAWP1mF10PWv6l6V7U9WezCV48PuW42wNVql4Hy4uEA9x_kx7asMTd_K-8Q/exec" method="POST">
-    <input type="text" name="data" placeholder="Type something..." required>
+    <input type="text" name="data" placeholder="Enter Name" required>
     <button type="submit">Submit</button>
   </form>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Simple styling for the message */
+    #message-container { text-align: center; margin-top: 50px; font-family: sans-serif; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <div id="content-wrapper">
+    <!-- This ID is used to target and replace the content -->
+    <form id="dataForm">
+      <input type="text" name="data" placeholder="Type something..." required>
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxXVhKNsTrcAWP1mF10PWv6l6V7U9WezCV48PuW42wNVql4Hy4uEA9x_kx7asMTd_K-8Q/exec'; // Replace with your Google Apps Script URL
+    const form = document.getElementById('dataForm');
+    const wrapper = document.getElementById('content-wrapper');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault(); // Prevents the page from refreshing
+      
+      // Optional: Change button text to show it's working
+      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('submitBtn').innerText = "Sending...";
+
+      fetch(scriptURL, { 
+        method: 'POST', 
+        body: new FormData(form) 
+      })
+      .then(response => {
+        // REPLACE the entire wrapper content with your success message
+        wrapper.innerHTML = "<h2>✅ Success! Your data was sent.</h2>";
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        alert("Something went wrong. Please try again.");
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').innerText = "Submit";
+      });
+    });
+  </script>
+
 </body>
 </html>
