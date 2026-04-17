@@ -86,9 +86,19 @@
   <div class="main-content" id="content-wrapper">
     <!-- This ID is used to target and replace the content -->
     <form id="dataForm">
-      <input type="text" name="data" maxlength="50" placeholder="Enter Name" required>
-      <button type="submit" id="submitBtn">Register</button>
-    </form>
+  <!-- The Level Toggle (Enum) -->
+  <select name="level" id="levelSelect" required>
+    <option value="" disabled selected>Select Level</option>
+    <option value="1">2</option>
+    <option value="2">2.5</option>
+    <option value="3">3</option>
+    <option value="4">3.5</option>
+    <option value="5">4</option>
+  </select>
+
+  <input type="text" name="data" maxlength="50" placeholder="Your Name/String" required>
+  <button type="submit" id="submitBtn">Submit</button>
+</form>
   </div>
 
   <script>
@@ -96,28 +106,25 @@
     const form = document.getElementById('dataForm');
     const wrapper = document.getElementById('content-wrapper');
 
-    form.addEventListener('submit', e => {
-      e.preventDefault(); // Prevents the page from refreshing
-      
-      // Optional: Change button text to show it's working
-      document.getElementById('submitBtn').disabled = true;
-      document.getElementById('submitBtn').innerText = "Sending...";
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  submitBtn.disabled = true;
 
-      fetch(scriptURL, { 
-        method: 'POST', 
-        body: new FormData(form) 
-      })
-      .then(response => {
-        // REPLACE the entire wrapper content with your success message
-        wrapper.innerHTML = "<h2>✅ Registered!</h2>";
-      })
-      .catch(error => {
-        console.error('Error!', error.message);
-        alert("Something went wrong. Please try again.");
-        document.getElementById('submitBtn').disabled = false;
-        document.getElementById('submitBtn').innerText = "Submit";
-      });
-    });
+  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+  .then(res => res.json())
+  .then(data => {
+    if (data.result === "full") {
+      alert(`The level ${data.level} is already full!`);
+      submitBtn.disabled = false;
+    } else {
+      wrapper.innerHTML = "<h2>✅ Successfully registered for " + form.level.value + "!</h2>";
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    submitBtn.disabled = false;
+  });
+});
   </script>
 
 </body>
