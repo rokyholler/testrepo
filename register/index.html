@@ -192,15 +192,24 @@ const statusMsg = document.getElementById('statusMessage');
     
 form.addEventListener('change', (e) => {
   if (e.target.name === 'limit') {
-    // Finds the <span> text inside the same label
-    const selectedText = e.target.parentElement.querySelector('span').innerText;
-    document.getElementById('levelText').value = selectedText;
+    // This looks for the very next element after the radio button (the span)
+    const spanText = e.target.nextElementSibling.innerText;
+    document.getElementById('levelText').value = spanText;
+    
+    // Debug: This will show in your browser console (F12) to confirm it works
+    console.log("Captured Level:", spanText); 
   }
 });
     
 form.addEventListener('submit', e => {
   e.preventDefault();
-  
+  // Add this inside your form 'submit' listener BEFORE the fetch
+if (!document.getElementById('levelText').value) {
+    alert("Please select a level first!");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit";
+    return; // Stops the submission
+}
   // 1. UI: Feedback that it's working
   submitBtn.disabled = true;
   submitBtn.innerText = "Sending Data...";
