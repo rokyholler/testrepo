@@ -74,6 +74,26 @@
   font-weight: bold;
   transition: all 0.3s ease;
 }
+.input-row {
+  display: flex;
+  align-items: center;    /* Keeps text and box vertically aligned */
+  gap: 15px;              /* Space between the text and the input */
+  width: 100%;
+  margin-bottom: 20px;    /* Space below the row */
+}
+
+.input-row label {
+  font-weight: bold;
+  white-space: nowrap;    /* Prevents label from breaking into two lines */
+  color: #333;
+}
+
+.input-row input {
+  flex: 1;                /* Makes the input fill the rest of the row */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
 .error-msg { background: #fee2e2; color: #dc2626; border: 1px solid #ef4444; }
 .hidden { display: none; }
