@@ -115,14 +115,40 @@
     <!-- This ID is used to target and replace the content -->
     <form id="dataForm">
   <!-- The Level Toggle (Enum) -->
-  <select name="level" id="levelSelect" required>
+  <!-- <select name="level" id="levelSelect" required>
     <option value="" disabled selected>Select Level</option>
     <option value="1">2</option>
     <option value="2">2.5</option>
     <option value="3">3</option>
     <option value="4">3.5</option>
     <option value="5">4</option>
-  </select>
+  </select> -->
+
+      <div class="radio-group">
+  <label class="radio-tile">
+    <input type="radio" name="limit" value="1" required>
+    <div class="tile-content">2</div>
+  </label>
+  <label class="radio-tile">
+    <input type="radio" name="limit" value="2">
+    <div class="tile-content">2.5</div>
+  </label>
+  <label class="radio-tile">
+    <input type="radio" name="limit" value="4">
+    <div class="tile-content">3</div>
+  </label>
+  <label class="radio-tile">
+    <input type="radio" name="limit" value="4">
+    <div class="tile-content">3.5</div>
+  </label>
+  <label class="radio-tile">
+    <input type="radio" name="limit" value="5">
+    <div class="tile-content">4</div>
+  </label>
+</div>
+
+<!-- Hidden input to capture the "Level Text" for the spreadsheet -->
+<input type="hidden" name="levelText" id="levelText">
 
   <input type="text" name="data" maxlength="50" placeholder="Your Name/String" required>
   <button type="submit" id="submitBtn">Submit</button>
