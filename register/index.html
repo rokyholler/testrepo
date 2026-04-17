@@ -58,6 +58,34 @@
     font-weight: bold;
   }
 
+    /* Button Loading State */
+#submitBtn:disabled {
+  background-color: #7a4a7d;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Status Message Styling */
+#statusMessage {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.error-msg { background: #fee2e2; color: #dc2626; border: 1px solid #ef4444; }
+.hidden { display: none; }
+
+/* Subtle pulse animation for the button */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+.loading { animation: pulse 1s infinite ease-in-out; }
+
   /* MOBILE STYLES (Applies to screens smaller than 600px) */
   @media (max-width: 900px) {
     .header {
@@ -98,6 +126,7 @@
 
   <input type="text" name="data" maxlength="50" placeholder="Your Name/String" required>
   <button type="submit" id="submitBtn">Submit</button>
+      <div id="statusMessage" class="hidden"></div>
 </form>
   </div>
 
@@ -106,25 +135,45 @@
     const form = document.getElementById('dataForm');
     const wrapper = document.getElementById('content-wrapper');
 
+const statusMsg = document.getElementById('statusMessage');
+
 form.addEventListener('submit', e => {
   e.preventDefault();
+  
+  // 1. UI: Feedback that it's working
   submitBtn.disabled = true;
+  submitBtn.innerText = "Sending Data...";
+  submitBtn.classList.add('loading');
+  statusMsg.classList.add('hidden'); // Hide any previous errors
 
   fetch(scriptURL, { method: 'POST', body: new FormData(form) })
   .then(res => res.json())
   .then(data => {
     if (data.result === "full") {
-      alert(`The level ${data.level} is already full!`);
+      // 2. UI: Pretty "Full" Message (Replaces Alert)
+      statusMsg.innerText = `Sorry, Level ${data.level} is full!`;
+      statusMsg.className = "error-msg"; // Apply error styling
+      statusMsg.classList.remove('hidden');
+      
+      // Reset button
       submitBtn.disabled = false;
+      submitBtn.innerText = "Submit";
+      submitBtn.classList.remove('loading');
     } else {
-      wrapper.innerHTML = "<h2>✅ Successfully registered for " + form.level.value + "!</h2>";
+      // 3. UI: Full replacement on success
+      wrapper.innerHTML = "<div class='success-container'><h2>✅ Registration Complete!</h2><p>Your spot is saved.</p></div>";
     }
   })
   .catch(err => {
-    console.error(err);
+    statusMsg.innerText = "Network error. Please try again.";
+    statusMsg.className = "error-msg";
+    statusMsg.classList.remove('hidden');
     submitBtn.disabled = false;
+    submitBtn.innerText = "Submit";
+    submitBtn.classList.remove('loading');
   });
 });
+
   </script>
 
 </body>
