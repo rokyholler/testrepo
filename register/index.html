@@ -74,25 +74,28 @@
   font-weight: bold;
   transition: all 0.3s ease;
 }
-.input-row {
+.radio-row-container {
   display: flex;
-  align-items: center;    /* Keeps text and box vertically aligned */
-  gap: 15px;              /* Space between the text and the input */
-  width: 100%;
-  margin-bottom: 20px;    /* Space below the row */
+  flex-direction: row; /* Forces them to stay side-by-side */
+  flex-wrap: wrap;     /* Allows them to wrap to a new line on narrow phones */
+  gap: 20px;           /* Space between each radio group */
+  margin-bottom: 20px;
+  justify-content: center;
 }
 
-.input-row label {
+.radio-item {
+  display: flex;
+  align-items: center; /* Centers circle and text vertically */
+  gap: 8px;            /* Space between circle and its number */
+  cursor: pointer;
   font-weight: bold;
-  white-space: nowrap;    /* Prevents label from breaking into two lines */
-  color: #333;
 }
 
-.input-row input {
-  flex: 1;                /* Makes the input fill the rest of the row */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* Optional: Make the radio circle a bit bigger for mobile */
+.radio-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }
 
 .error-msg { background: #fee2e2; color: #dc2626; border: 1px solid #ef4444; }
@@ -144,26 +147,30 @@
     <option value="5">4</option>
   </select> -->
 
-      <div class="radio-group">
-  <label class="radio-tile">
+<div class="radio-row-container">
+  <label class="radio-item">
     <input type="radio" name="limit" value="1" required>
-    <div class="tile-content">2</div>
+    <span>2</span>
   </label>
-  <label class="radio-tile">
+
+  <label class="radio-item">
     <input type="radio" name="limit" value="2">
-    <div class="tile-content">2.5</div>
+    <span>2.5</span>
   </label>
-  <label class="radio-tile">
+
+  <label class="radio-item">
     <input type="radio" name="limit" value="4">
-    <div class="tile-content">3</div>
+    <span>3</span>
   </label>
-  <label class="radio-tile">
+
+  <label class="radio-item">
     <input type="radio" name="limit" value="4">
-    <div class="tile-content">3.5</div>
+    <span>3.5</span>
   </label>
-  <label class="radio-tile">
+
+  <label class="radio-item">
     <input type="radio" name="limit" value="5">
-    <div class="tile-content">4</div>
+    <span>4</span>
   </label>
 </div>
 
@@ -182,7 +189,15 @@
     const wrapper = document.getElementById('content-wrapper');
 
 const statusMsg = document.getElementById('statusMessage');
-
+    
+form.addEventListener('change', (e) => {
+  if (e.target.name === 'limit') {
+    // Finds the <span> text inside the same label
+    const selectedText = e.target.parentElement.querySelector('span').innerText;
+    document.getElementById('levelText').value = selectedText;
+  }
+});
+    
 form.addEventListener('submit', e => {
   e.preventDefault();
   
