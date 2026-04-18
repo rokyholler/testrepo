@@ -149,28 +149,43 @@
 
 <div class="radio-row-container">
   <label class="radio-item">
-    <input type="radio" name="limit" value="1" required>
-    <span>2</span>
-  </label>
-
-  <label class="radio-item">
-    <input type="radio" name="limit" value="2">
+    <input type="radio" name="limit" value="1">
     <span>2.5</span>
   </label>
 
   <label class="radio-item">
-    <input type="radio" name="limit" value="4">
-    <span>3</span>
+    <input type="radio" name="limit" value="1">
+    <span>3.0</span>
   </label>
 
   <label class="radio-item">
-    <input type="radio" name="limit" value="4">
+    <input type="radio" name="limit" value="1">
     <span>3.5</span>
   </label>
 
   <label class="radio-item">
-    <input type="radio" name="limit" value="5">
-    <span>4</span>
+    <input type="radio" name="limit" value="2">
+    <span>4.0</span>
+  </label>
+
+    <label class="radio-item">
+    <input type="radio" name="limit" value="2">
+    <span>4.5</span>
+  </label>
+
+    <label class="radio-item">
+    <input type="radio" name="limit" value="2">
+    <span>5.0</span>
+  </label>
+
+      <label class="radio-item">
+    <input type="radio" name="limit" value="2">
+    <span>5.3</span>
+  </label>
+
+      <label class="radio-item">
+    <input type="radio" name="limit" value="2">
+    <span>5.5</span>
   </label>
 </div>
 
@@ -185,71 +200,67 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbygkv3amvWdfHiT1o9rKieda3Y0_3KV2McffKdIBBES5TyZoMZjDOTm8YiDAuiDzECRmw/exec'; // Replace with your Google Apps Script URL
-    const form = document.getElementById('dataForm');
-    const wrapper = document.getElementById('content-wrapper');
-
+const form = document.getElementById('dataForm');
+const wrapper = document.getElementById('content-wrapper');
+const submitBtn = document.getElementById('submitBtn');
 const statusMsg = document.getElementById('statusMessage');
-    
-document.addEventListener('click', (e) => {
-  if (e.target.name === 'limit') {
-    // 1. Grab the text from the <span> next to the radio
-    const spanText = e.target.nextElementSibling.innerText.trim();
-    
-    // 2. Set the hidden input value
-    document.getElementById('levelText').value = spanText;
-    
-    // 3. LOG TO CONSOLE (If you don't see this, the code isn't running)
-    console.log("SUCCESS: Level captured as:", spanText);
-  }
-});
-    
+
+
 form.addEventListener('submit', e => {
   e.preventDefault();
 
-  // Double check levelText isn't empty right before sending
-  const levelVal = document.getElementById('levelText').value;
-  if (!levelVal) {
-      alert("Please select a level!");
-      return;
+  // 1. Validation: Ensure a level is actually selected
+  const selectedRadio = form.querySelector('input[name="limit"]:checked');
+  if (!selectedRadio) {
+    statusMsg.innerText = "Please select a level first!";
+    statusMsg.className = "error-msg";
+    statusMsg.classList.remove('hidden');
+    return;
   }
 
-  const formData = new FormData(form);
-  // Optional debug: See what's actually being sent
-  console.log("Sending levelText:", formData.get('levelText'));
-
-  fetch(scriptURL, { method: 'POST', body: formData })
-  // 1. UI: Feedback that it's working
+  // 2. UI: Show the button is working
   submitBtn.disabled = true;
-  submitBtn.innerText = "Sending Data...";
+  submitBtn.innerText = "Checking availability...";
   submitBtn.classList.add('loading');
-  statusMsg.classList.add('hidden'); // Hide any previous errors
+  statusMsg.classList.add('hidden');
 
+  // 3. Send Data
   fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-  .then(res => res.json())
-  .then(data => {
-    if (data.result === "full") {
-      // 2. UI: Pretty "Full" Message (Replaces Alert)
-      statusMsg.innerText = `Sorry, Level ${data.level} is full!`;
-      statusMsg.className = "error-msg"; // Apply error styling
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then(data => {
+      if (data.result === "full") {
+        // Handle the "N limit reached" case
+        statusMsg.innerText = "Sorry, that level is now full!";
+        statusMsg.className = "error-msg";
+        statusMsg.classList.remove('hidden');
+        
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit";
+        submitBtn.classList.remove('loading');
+      } else {
+        // Handle Success
+        wrapper.innerHTML = `
+          <div style="text-align:center; padding: 40px;">
+            <h2>✅ Success!</h2>
+            <p>Your registration has been recorded.</p>
+            <br>
+            <a href="/" style="color: #470D4A; font-weight: bold; text-decoration: none;">← Return Home</a>
+          </div>`;
+      }
+    })
+    .catch(err => {
+      console.error('Error!', err.message);
+      statusMsg.innerText = "System error. Please try again later.";
+      statusMsg.className = "error-msg";
       statusMsg.classList.remove('hidden');
       
-      // Reset button
       submitBtn.disabled = false;
       submitBtn.innerText = "Submit";
       submitBtn.classList.remove('loading');
-    } else {
-      // 3. UI: Full replacement on success
-      wrapper.innerHTML = "<div class='success-container'><h2>✅ Registration Complete!</h2><p>Your spot is saved.</p></div>";
-    }
-  })
-  .catch(err => {
-    statusMsg.innerText = "Network error. Please try again.";
-    statusMsg.className = "error-msg";
-    statusMsg.classList.remove('hidden');
-    submitBtn.disabled = false;
-    submitBtn.innerText = "Submit";
-    submitBtn.classList.remove('loading');
-  });
+    });
 });
 
   </script>
