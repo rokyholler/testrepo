@@ -75,19 +75,19 @@
   transition: all 0.3s ease;
 }
 .radio-row-container {
-  display: flex;
-  flex-direction: row; /* Forces them to stay side-by-side */
-  flex-wrap: wrap;     /* Allows them to wrap to a new line on narrow phones */
-  gap: 20px;           /* Space between each radio group */
+  display: grid;
+  /* Forces 3 items per row */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px;
   margin-bottom: 20px;
-  justify-content: center;
+  width: 100%;
 }
 
 .radio-item {
   display: flex;
-  align-items: center; /* Centers circle and text vertically */
-  gap: 8px;            /* Space between circle and its number */
-  cursor: pointer;
+  align-items: center;
+  justify-content: center; /* Centers the radio+text in its grid cell */
+  gap: 8px;
   font-weight: bold;
 }
 
