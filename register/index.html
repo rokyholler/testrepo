@@ -190,13 +190,16 @@
 
 const statusMsg = document.getElementById('statusMessage');
     
-form.addEventListener('change', (e) => {
+document.addEventListener('click', (e) => {
   if (e.target.name === 'limit') {
-    // Finds the parent label and grabs all text inside it
-    const selectedText = e.target.closest('label').textContent.trim();
-    document.getElementById('levelText').value = selectedText;
+    // 1. Grab the text from the <span> next to the radio
+    const spanText = e.target.nextElementSibling.innerText.trim();
     
-    console.log("Setting levelText to:", selectedText);
+    // 2. Set the hidden input value
+    document.getElementById('levelText').value = spanText;
+    
+    // 3. LOG TO CONSOLE (If you don't see this, the code isn't running)
+    console.log("SUCCESS: Level captured as:", spanText);
   }
 });
     
