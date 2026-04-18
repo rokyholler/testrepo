@@ -200,68 +200,45 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwy0oBDYr7TXZE_RjyC-GNdmY_dOEO5FZ4mGWFe5n_hmfLKYVnCgEP7tm4BGd0d4mmomQ/exec'; // Replace with your Google Apps Script URL
-const form = document.getElementById('dataForm');
-const wrapper = document.getElementById('content-wrapper');
-const submitBtn = document.getElementById('submitBtn');
-const statusMsg = document.getElementById('statusMessage');
+    const form = document.getElementById('dataForm');
+    const wrapper = document.getElementById('content-wrapper');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMessage');
 
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  // 1. Validation: Ensure a level is actually selected
-  const selectedRadio = form.querySelector('input[name="limit"]:checked');
-  if (!selectedRadio) {
-    statusMsg.innerText = "Please select a level first!";
-    statusMsg.className = "error-msg";
-    statusMsg.classList.remove('hidden');
-    return;
-  }
-
-  // 2. UI: Show the button is working
-  submitBtn.disabled = true;
-  submitBtn.innerText = "Checking availability...";
-  submitBtn.classList.add('loading');
-  statusMsg.classList.add('hidden');
-
-  // 3. Send Data
-  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-    .then(res => {
-      if (!res.ok) throw new Error('Network response was not ok');
-      return res.json();
-    })
-    .then(data => {
-      if (data.result === "full") {
-        // Handle the "N limit reached" case
-        statusMsg.innerText = "Sorry, that level is now full!";
-        statusMsg.className = "error-msg";
-        statusMsg.classList.remove('hidden');
-        
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Submit";
-        submitBtn.classList.remove('loading');
-      } else {
-        // Handle Success
-        wrapper.innerHTML = `
-          <div style="text-align:center; padding: 40px;">
-            <h2>✅ Success!</h2>
-            <p>Your registration has been recorded.</p>
-            <br>
-            <a href="/" style="color: #470D4A; font-weight: bold; text-decoration: none;">← Return Home</a>
-          </div>`;
-      }
-    })
-    .catch(err => {
-      console.error('Error!', err.message);
-      statusMsg.innerText = "System error. Please try again later.";
-      statusMsg.className = "error-msg";
-      statusMsg.classList.remove('hidden');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
       
-      submitBtn.disabled = false;
-      submitBtn.innerText = "Submit";
-      submitBtn.classList.remove('loading');
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Submitting...";
+      statusMsg.classList.add('hidden');
+
+      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+        .then(res => res.json())
+        .then(data => {
+          if (data.result === "full") {
+            statusMsg.innerText = "This Flight is already full!";
+            statusMsg.className = "error-msg";
+            statusMsg.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit";
+          } else {
+            wrapper.innerHTML = `
+              <div style="text-align:center; padding: 40px;">
+                <h2>✅ Success!</h2>
+                <p>Registration complete.</p>
+                <br>
+                <a href="/" style="color: #470D4A; font-weight: bold; text-decoration: none;">← Return Home</a>
+              </div>`;
+          }
+        })
+        .catch(err => {
+          statusMsg.innerText = "System error. Try again.";
+          statusMsg.className = "error-msg";
+          statusMsg.classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Submit";
+        });
     });
-});
 
   </script>
 
