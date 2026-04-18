@@ -192,24 +192,29 @@ const statusMsg = document.getElementById('statusMessage');
     
 form.addEventListener('change', (e) => {
   if (e.target.name === 'limit') {
-    // This grabs the text content of the label associated with the radio
-    const selectedLabelText = e.target.labels[0].textContent.trim();
-    document.getElementById('levelText').value = selectedLabelText;
+    // Finds the parent label and grabs all text inside it
+    const selectedText = e.target.closest('label').textContent.trim();
+    document.getElementById('levelText').value = selectedText;
     
-    // Debugging: Check your browser console (F12) to see this work in real-time
-    console.log("Captured Level Text:", selectedLabelText);
+    console.log("Setting levelText to:", selectedText);
   }
 });
     
 form.addEventListener('submit', e => {
   e.preventDefault();
-  // Add this inside your form 'submit' listener BEFORE the fetch
-if (!document.getElementById('levelText').value) {
-    alert("Please select a level first!");
-    submitBtn.disabled = false;
-    submitBtn.innerText = "Submit";
-    return; // Stops the submission
-}
+
+  // Double check levelText isn't empty right before sending
+  const levelVal = document.getElementById('levelText').value;
+  if (!levelVal) {
+      alert("Please select a level!");
+      return;
+  }
+
+  const formData = new FormData(form);
+  // Optional debug: See what's actually being sent
+  console.log("Sending levelText:", formData.get('levelText'));
+
+  fetch(scriptURL, { method: 'POST', body: formData })
   // 1. UI: Feedback that it's working
   submitBtn.disabled = true;
   submitBtn.innerText = "Sending Data...";
