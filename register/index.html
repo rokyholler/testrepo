@@ -75,18 +75,22 @@
   transition: all 0.3s ease;
 }
 .radio-row-container {
-  display: grid;
-  /* Forces 3 items per row */
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 15px;
+  display: flex;
+  flex-wrap: wrap;        /* Allows items to move to the next row */
+  justify-content: center; /* Centers both rows horizontally */
+  gap: 20px;              /* Space between toggles */
   margin-bottom: 20px;
-  width: 100%;
+}
+
+/* This is the secret to forcing exactly 2 rows */
+.break {
+  flex-basis: 100%;       /* Takes up the full width of the container */
+  height: 0;              /* No height so it's invisible */
 }
 
 .radio-item {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centers the radio+text in its grid cell */
   gap: 8px;
   font-weight: bold;
 }
@@ -162,6 +166,7 @@
     <input type="radio" name="limit" value="1">
     <span>3.5</span>
   </label>
+ <div class="break"></div>
 
   <label class="radio-item">
     <input type="radio" name="limit" value="2">
