@@ -139,17 +139,9 @@
   <a href="/" style="color: white; text-decoration: none;">MBC Tennis</a>
 </header>
   <div class="main-content" id="content-wrapper">
-    <!-- This ID is used to target and replace the content -->
+
     <form id="dataForm">
-  <!-- The Level Toggle (Enum) -->
-  <!-- <select name="level" id="levelSelect" required>
-    <option value="" disabled selected>Select Level</option>
-    <option value="1">2</option>
-    <option value="1">2.5</option>
-    <option value="1">3</option>
-    <option value="2">3.5</option>
-    <option value="2">4</option>
-  </select> -->
+
 
 <div class="radio-row-container">
   <label class="radio-item">
@@ -194,10 +186,7 @@
   </label>
 </div>
 
-<!-- Hidden input to capture the "Level Text" for the spreadsheet -->
-<input type="hidden" name="levelText" id="levelText">
-
-  <input type="text" name="data" maxlength="50" placeholder="Your Name/String" required>
+  <input type="text" name="data" maxlength="50" placeholder="Your Name" required>
   <button type="submit" id="submitBtn">Submit</button>
       <div id="statusMessage" class="hidden"></div>
 </form>
